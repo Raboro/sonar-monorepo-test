@@ -1,0 +1,23 @@
+{
+  "name": "app-three-api",
+  "targets": {
+    "serve": {
+      "command": "uvicorn main:app --reload --port 8001",
+      "options": {
+        "cwd": "apps/app-three/api"
+      }
+    },
+    "test": {
+      "command": "pytest",
+      "options": {
+        "cwd": "apps/app-three/api"
+      }
+    },
+    "coverage": {
+      "command": "pytest --cov=. --cov-report=html",
+      "options": {
+        "cwd": "apps/app-three/api"
+      }
+    }
+  }
+}
