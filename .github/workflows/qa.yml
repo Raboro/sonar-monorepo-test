@@ -58,6 +58,7 @@ jobs:
 
       - name: Sonar Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.0
+        working-directory: ./apps/${{ matrix.app }}/ui/
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
@@ -109,6 +110,7 @@ jobs:
 
       - name: Sonar Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.0
+        working-directory: ./apps/${{ matrix.app }}/api/
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
