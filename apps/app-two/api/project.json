@@ -1,0 +1,23 @@
+{
+  "name": "app-two-api",
+  "targets": {
+    "serve": {
+      "command": "uvicorn main:app --reload --port 8001",
+      "options": {
+        "cwd": "apps/app-two/api"
+      }
+    },
+    "test": {
+      "command": "pytest",
+      "options": {
+        "cwd": "apps/app-two/api"
+      }
+    },
+    "coverage": {
+      "command": "pytest --cov=. --cov-report=html",
+      "options": {
+        "cwd": "apps/app-two/api"
+      }
+    }
+  }
+}

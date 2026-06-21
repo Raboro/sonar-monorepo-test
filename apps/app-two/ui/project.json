@@ -1,0 +1,23 @@
+{
+  "name": "app-two-ui",
+  "targets": {
+    "serve": {
+      "command": "npm run dev",
+      "options": {
+        "cwd": "apps/app-two/ui"
+      }
+    },
+    "test": {
+      "command": "npm run test",
+      "options": {
+        "cwd": "apps/app-two/ui"
+      }
+    },
+    "coverage": {
+      "command": "npm run coverage",
+      "options": {
+        "cwd": "apps/app-two/ui"
+      }
+    }
+  }
+}

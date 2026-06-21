@@ -1,0 +1,13 @@
+{
+  "name": "my-monorepo",
+  "private": true,
+  "scripts": {
+    "app-one-ui": "nx run app-one-ui:serve",
+    "app-one-api": "nx run app-one-api:serve",
+    "app-two-ui": "nx run app-two-ui:serve",
+    "app-two-api": "nx run app-two-api:serve"
+  },
+  "devDependencies": {
+    "nx": "^22.0.0"
+  }
+}

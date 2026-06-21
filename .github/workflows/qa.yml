@@ -1,0 +1,97 @@
+name: QA
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+
+    outputs:
+      apps: ${{ steps.discover.outputs.apps }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: discover
+        run: |
+          APPS=$(find apps -mindepth 1 -maxdepth 1 -type d \
+            | xargs -n1 basename \
+            | jq -R -s -c 'split("\n")[:-1]')
+
+          echo "apps=$APPS" >> $GITHUB_OUTPUT
+
+  ui:
+    name: QA UI
+    needs: discover
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.discover.outputs.apps) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: apps/${{ matrix.app }}/ui
+        run: npm ci
+
+      - name: Coverage
+        working-directory: apps/${{ matrix.app }}/ui
+        run: npm run coverage
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-ui-${{ matrix.app }}
+          path: apps/${{ matrix.app }}/ui/coverage
+
+  api:
+    name: QA API
+    needs: discover
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.discover.outputs.apps) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        working-directory: apps/${{ matrix.app }}/api
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Coverage
+        working-directory: apps/${{ matrix.app }}/api
+        run: |
+          pytest \
+            --cov=. \
+            --cov-report=xml \
+            --cov-report=html
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-api-${{ matrix.app }}
+          path: |
+            apps/${{ matrix.app }}/api/htmlcov
+            apps/${{ matrix.app }}/api/coverage.xml

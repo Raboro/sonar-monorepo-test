@@ -1,0 +1,23 @@
+{
+  "name": "app-one-api",
+  "targets": {
+    "serve": {
+      "command": "uvicorn main:app --reload --port 8001",
+      "options": {
+        "cwd": "apps/app-one/api"
+      }
+    },
+    "test": {
+      "command": "pytest",
+      "options": {
+        "cwd": "apps/app-one/api"
+      }
+    },
+    "coverage": {
+      "command": "pytest --cov=. --cov-report=html",
+      "options": {
+        "cwd": "apps/app-one/api"
+      }
+    }
+  }
+}
