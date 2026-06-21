@@ -56,6 +56,17 @@ jobs:
           name: coverage-ui-${{ matrix.app }}
           path: apps/${{ matrix.app }}/ui/coverage
 
+      - name: Sonar Scan
+        uses: SonarSource/sonarqube-scan-action@v8.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=raboro_sonar-monorepo-test-${{ matrix.app }}-ui
+            -Dsonar.organization=raboro
+            -Dsonar.sources=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+
   api:
     name: QA API
     needs: discover
@@ -95,3 +106,14 @@ jobs:
           path: |
             apps/${{ matrix.app }}/api/htmlcov
             apps/${{ matrix.app }}/api/coverage.xml
+
+      - name: Sonar Scan
+        uses: SonarSource/sonarqube-scan-action@v8.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=raboro_sonar-monorepo-test-${{ matrix.app }}-api
+            -Dsonar.organization=raboro
+            -Dsonar.sources=.
+            -Dsonar.python.coverage.reportPaths=coverage.xml
