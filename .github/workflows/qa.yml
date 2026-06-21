@@ -58,15 +58,14 @@ jobs:
 
       - name: Sonar Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.0
-        working-directory: ./apps/${{ matrix.app }}/ui/
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=raboro_sonar-monorepo-test-${{ matrix.app }}-ui
             -Dsonar.organization=raboro
-            -Dsonar.sources=src
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sources=./apps/${{ matrix.app }}/ui/src
+            -Dsonar.javascript.lcov.reportPaths=./apps/${{ matrix.app }}/ui/coverage/lcov.info
 
   api:
     name: QA API
@@ -110,12 +109,11 @@ jobs:
 
       - name: Sonar Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.0
-        working-directory: ./apps/${{ matrix.app }}/api/
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=raboro_sonar-monorepo-test-${{ matrix.app }}-api
             -Dsonar.organization=raboro
-            -Dsonar.sources=.
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=./apps/${{ matrix.app }}/api/
+            -Dsonar.python.coverage.reportPaths=./apps/${{ matrix.app }}/api/coverage.xml
